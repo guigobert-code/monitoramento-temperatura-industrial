@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Monitoramento de Temperatura Industrial</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <header class="header">
+        <h1>Monitoramento de Temperatura Industrial</h1>
+        <p>Sistema de análise, interpolação e controle de temperatura</p>
+    </header>
+
+    <main class="container">
+
+        <section class="card-form">
+            <h2>Consultar temperatura</h2>
+
+            <form method="POST">
+                <input 
+                    type="number" 
+                    step="any" 
+                    name="valor_x" 
+                    placeholder="Digite o valor de X"
+                    required
+                >
+
+                <button type="submit">Calcular</button>
+            </form>
+        </section>
+
+        <section class="cards">
+
+            <div class="card">
+                <h3>Temperatura estimada</h3>
+                {% if resultado is not none %}
+                    <p>{{ "%.2f"|format(resultado) }} °C</p>
+                {% else %}
+                    <p>--</p>
+                {% endif %}
+            </div>
+
+            <div class="card">
+                <h3>Erro médio</h3>
+                {% if erro is not none %}
+                    <p>{{ "%.2f"|format(erro) }}</p>
+                {% else %}
+                    <p>--</p>
+                {% endif %}
+            </div>
+
+            <div class="card">
+                <h3>Desvio padrão</h3>
+                {% if desvio is not none %}
+                    <p>{{ "%.2f"|format(desvio) }}</p>
+                {% else %}
+                    <p>--</p>
+                {% endif %}
+            </div>
+
+            <div class="card">
+                <h3>Status do processo</h3>
+
+                {% if status == "Normal" %}
+                    <p class="normal">Normal</p>
+                {% elif status == "Alerta" %}
+                    <p class="alerta">Alerta</p>
+                {% elif status == "Crítico" %}
+                    <p class="critico">Crítico</p>
+                {% else %}
+                    <p>--</p>
+                {% endif %}
+            </div>
+
+        </section>
+
+        <section class="grafico">
+            <h2>Gráfico de Temperatura</h2>
+
+            {% if resultado is not none %}
+                <img src="{{ url_for('static', filename='grafico.png', t=valor_x) }}" alt="Gráfico de temperatura">
+            {% else %}
+                <p>Digite um valor de X para gerar o gráfico.</p>
+            {% endif %}
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <p>Projeto acadêmico - Monitoramento de Temperatura Industrial</p>
+    </footer>
+
+</body>
+</html>
