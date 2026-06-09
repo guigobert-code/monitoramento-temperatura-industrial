@@ -1,13 +1,20 @@
 import numpy as np
 
 def calcular_erro(y):
-    
-    media = np.mean(y)
+    if not y or len(y) == 0:
+        return 0
 
-    erro = [abs(valor - media) for valor in y]
-    
-    return np.mean (erro)
-    
+    media = sum(y) / len(y)
+
+    if media == 0:
+        return 0
+
+    erro = sum(abs(valor - media) for valor in y) / len(y)
+    return erro
+
+
 def desvio_padrao(y):
+    if not y or len(y) == 0:
+        return 0
 
-    return np.std(y)
+    return float(np.std(y))
